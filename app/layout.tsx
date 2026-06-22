@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "DynaPrizes - Compare Prices & Save",
   description: "India's first shopping super-app. Compare prices across 100+ stores.",
+  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes",
 };
 
 export default function RootLayout({
@@ -25,28 +26,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-      </head>
       <body>
         {children}
-        
-        {/* Cuelink Integration */}
+
+        {/* Cuelink - Correct Implementation */}
+        <Script id="cuelinks-config" strategy="beforeInteractive">
+          {`window.cId = '226073';`}
+        </Script>
+
         <Script
-          id="cuelink-script"
+          src="https://cdn0.cuelinks.com/js/cuelinksv2.js"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              var cId = '226073';
-              (function(d, t) {
-                var s = document.createElement('script');
-                s.type = 'text/javascript';
-                s.async = true;
-                s.src = (document.location.protocol == 'https:' ? 'https://cdn0.cuelinks.com/js/' : 'http://cdn0.cuelinks.com/js/') + 'cuelinksv2.js';
-                document.getElementsByTagName('body')[0].appendChild(s);
-              })();
-            `
-          }}
         />
       </body>
     </html>
