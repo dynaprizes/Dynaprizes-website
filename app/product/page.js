@@ -90,14 +90,15 @@ function sortedRetailers(retailers) {
 }
 
 function buildUrl(r) {
-  let url = r.url;
+  // ✅ Remove #fragment BEFORE anything else
+  let url = r.url.split('#')[0];
   
   // Amazon uses its own tag
   if (r.name === "Amazon" && !url.includes("tag=")) {
     return url + (url.includes("?") ? "&" : "?") + "tag=" + AMZ_TAG;
   }
   
-  // For all other retailers, use Cuelink
+  // For all other retailers, use Cuelink with clean URL
   return getAffiliateUrl(url);
 }
 
