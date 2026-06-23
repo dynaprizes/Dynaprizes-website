@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { getAffiliateUrl } from "@/lib/cuelinks";
 
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const API_BASE = "https://dynaprizes-backend.onrender.com";
@@ -89,10 +90,15 @@ function sortedRetailers(retailers) {
 }
 
 function buildUrl(r) {
-  if (r.name === "Amazon" && !r.url.includes("tag=")) {
-    return r.url + (r.url.includes("?") ? "&" : "?") + "tag=" + AMZ_TAG;
+  let url = r.url;
+  
+  // Amazon uses its own tag
+  if (r.name === "Amazon" && !url.includes("tag=")) {
+    return url + (url.includes("?") ? "&" : "?") + "tag=" + AMZ_TAG;
   }
-  return r.url;
+  
+  // For all other retailers, use Cuelink
+  return getAffiliateUrl(url);
 }
 
 // ─── SKELETON ────────────────────────────────────────────────────────────────
