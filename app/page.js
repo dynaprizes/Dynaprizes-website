@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AuthModal from '../components/AuthModal';
+import AuthModal from './components/AuthModal';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
