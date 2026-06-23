@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,10 +12,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: true,
+};
+
 export const metadata: Metadata = {
   title: "DynaPrizes - Compare Prices & Save",
   description: "India's first shopping super-app. Compare prices across 100+ stores.",
-  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes",
 };
 
 export default function RootLayout({
@@ -25,18 +30,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         {children}
 
-        {/* Cuelink - Correct Implementation */}
-        <Script id="cuelinks-config" strategy="beforeInteractive">
-          {`window.cId = '226073';`}
-        </Script>
-
-        <Script
-          src="https://cdn0.cuelinks.com/js/cuelinksv2.js"
-          strategy="afterInteractive"
+        {/* Cuelink - Single Block Guaranteed Execution */}
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.cId = '226073';
+              (function() {
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://cdn0.cuelinks.com/js/cuelinksv2.js';
+                var x = document.getElementsByTagName('script')[0];
+                x.parentNode.insertBefore(s, x);
+              })();
+            `
+          }}
         />
       </body>
     </html>
