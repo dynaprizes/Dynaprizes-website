@@ -11,13 +11,13 @@ export default function RootLayout({
       <body>
         {children}
 
-        {/* Static script for dashboard verification */}
+        {/* Cuelink for dynaprizes.shop - Publisher ID: 298456 */}
         <script
           type="text/javascript"
           dangerouslySetInnerHTML={{
             __html: `
-              var cId = '226073';
-              window.cId = '226073';
+              var cId = '298456';
+              window.cId = '298456';
               (function() {
                 var s = document.createElement('script');
                 s.type = 'text/javascript';
