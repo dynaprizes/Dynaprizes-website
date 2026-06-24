@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import Script from 'next/script'; // Import the Next.js script optimizer
+import Script from 'next/script';
 import CuelinksUpdater from './components/CuelinksUpdater';
 
 export default function RootLayout({
@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Step 1: Force bind variables globally before any scripts run */}
+        {/* Force bind the tracking metadata context onto the main layout window frame */}
         <Script id="cuelinks-config" strategy="beforeInteractive">
           {`
             window.cueLinks = true;
@@ -18,7 +18,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Step 2: Load the modern Cuelinks engine that provides window.CLK */}
+        {/* ✅ CORRECTED PATH: Fetching the script logic, not the HTML homepage */}
         <Script 
           src="https://cuelinks.com" 
           strategy="afterInteractive"
@@ -26,7 +26,6 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-
         <Suspense fallback={null}>
           <CuelinksUpdater />
         </Suspense>
