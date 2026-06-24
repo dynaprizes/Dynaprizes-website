@@ -1,34 +1,32 @@
-import { Suspense } from 'react';
-import Script from 'next/script';
-import CuelinksUpdater from './components/CuelinksUpdater';
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "DynaPrizes - Compare Prices & Save",
+  description: "India's first shopping super-app. Compare prices across 100+ stores.",
+  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes",
+};
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en">
-      <head>
-        {/* Force bind the tracking metadata context onto the main layout window frame */}
-        <Script id="cuelinks-config" strategy="beforeInteractive">
-          {`
-            window.cueLinks = true;
-            window.cId = '298456';
-          `}
-        </Script>
-
-        {/* ✅ CORRECTED PATH: Fetching the script logic, not the HTML homepage */}
-        <Script 
-          src="https://cuelinks.com" 
-          strategy="afterInteractive"
-        />
-      </head>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         {children}
-        <Suspense fallback={null}>
-          <CuelinksUpdater />
-        </Suspense>
       </body>
     </html>
   );
