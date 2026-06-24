@@ -10,23 +10,32 @@ export default function CuelinksUpdater() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const timer = setTimeout(() => {
-      // ✅ Updated to look inside the modern window.CLK object
+    let attempts = 0;
+    const maxAttempts = 10; // Max time to wait: ~3 seconds
+
+    const checkAndScan = () => {
       const clkEngine = (window as any).CLK;
 
       if (clkEngine && typeof clkEngine.Processfn === 'function') {
         try {
           clkEngine.Processfn();
-          console.log(`[Cuelinks Router Core] Scanned links for path: ${pathname}`);
+          console.log(`[Cuelinks Router Core] Successfully parsed links for: ${pathname}`);
         } catch (error) {
-          console.error('Cuelinks dynamic runtime scan failed:', error);
+          console.error('Cuelinks dynamic execution runtime error:', error);
         }
+      } else if (attempts < maxAttempts) {
+        attempts++;
+        // Retry scanning after 300ms if engine is still hydrating
+        setTimeout(checkAndScan, 300);
       } else {
-        console.warn('Cuelinks CLK core engine is not fully initialized yet.');
+        console.warn('[Cuelinks] Core engine failed to initialize after maximum wait time. Check network block.');
       }
-    }, 200); // 200ms gives your Node.js/Next.js UI plenty of time to render completely
+    };
 
-    return () => clearTimeout(timer);
+    // Trigger initial scan execution buffer delay
+    const initialTimer = setTimeout(checkAndScan, 200);
+
+    return () => clearTimeout(initialTimer);
   }, [pathname, searchParams]);
 
   return null;
