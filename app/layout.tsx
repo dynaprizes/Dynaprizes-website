@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Script from 'next/script'; // Import the Next.js script optimizer
 import CuelinksUpdater from './components/CuelinksUpdater';
 
 export default function RootLayout({
@@ -8,27 +9,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Step 1: Force bind variables globally before any scripts run */}
+        <Script id="cuelinks-config" strategy="beforeInteractive">
+          {`
+            window.cueLinks = true;
+            window.cId = '298456';
+          `}
+        </Script>
+
+        {/* Step 2: Load the modern Cuelinks engine that provides window.CLK */}
+        <Script 
+          src="https://cuelinks.com" 
+          strategy="afterInteractive"
+        />
+      </head>
       <body>
         {children}
-
-        {/* Cuelink for dynaprizes.shop - Publisher ID: 298456 */}
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `
-              var cId = '298456';
-              window.cId = '298456';
-              (function() {
-                var s = document.createElement('script');
-                s.type = 'text/javascript';
-                s.async = true;
-                s.src = 'https://cdn0.cuelinks.com/js/cuelinksv2.js';
-                var x = document.getElementsByTagName('script')[0];
-                x.parentNode.insertBefore(s, x);
-              })();
-            `
-          }}
-        />
 
         <Suspense fallback={null}>
           <CuelinksUpdater />

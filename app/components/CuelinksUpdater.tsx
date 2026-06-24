@@ -11,15 +11,20 @@ export default function CuelinksUpdater() {
     if (typeof window === 'undefined') return;
 
     const timer = setTimeout(() => {
-      if (typeof (window as any).Processfn === 'function') {
+      // ✅ Updated to look inside the modern window.CLK object
+      const clkEngine = (window as any).CLK;
+
+      if (clkEngine && typeof clkEngine.Processfn === 'function') {
         try {
-          (window as any).Processfn();
-          console.log(`Cuelinks scanned links for: ${pathname}`);
+          clkEngine.Processfn();
+          console.log(`[Cuelinks Router Core] Scanned links for path: ${pathname}`);
         } catch (error) {
-          console.error('Cuelinks scan failed:', error);
+          console.error('Cuelinks dynamic runtime scan failed:', error);
         }
+      } else {
+        console.warn('Cuelinks CLK core engine is not fully initialized yet.');
       }
-    }, 150);
+    }, 200); // 200ms gives your Node.js/Next.js UI plenty of time to render completely
 
     return () => clearTimeout(timer);
   }, [pathname, searchParams]);

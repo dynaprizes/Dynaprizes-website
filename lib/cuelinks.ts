@@ -1,10 +1,7 @@
 export function getAffiliateUrl(originalUrl: string): string {
   if (!originalUrl) return "";
   
-  const cleanUrl = originalUrl.split('#')[0];
-  const PUBLISHER_ID = "298456";
-  const encodedUrl = encodeURIComponent(cleanUrl);
-  
-  // ✅ Remove the slash after .com
-  return `https://linksredirect.com?cid=${PUBLISHER_ID}&url=${encodedUrl}`;
+  // Return the raw, clean store link. 
+  // Your fixed layout.tsx Cuelinks JS script will auto-convert this on click!
+  return originalUrl.split('#')[0].trim();
 }
