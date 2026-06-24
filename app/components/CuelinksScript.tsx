@@ -9,8 +9,8 @@ export default function CuelinksScript() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Set publisher ID
-    (window as any).cId = '226073';
+    // ✅ Update for dynaprizes.shop
+    (window as any).cId = '298456';
 
     // Remove old script if exists
     const oldScript = document.getElementById('cuelinks-engine');
